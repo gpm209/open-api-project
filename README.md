@@ -1,2 +1,3 @@
 # open-api-project
-A project that fetches and displays data from an open API
+
+A project that fetches and displays weather data from the open source API: Open-Meteo.
