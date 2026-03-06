@@ -38,6 +38,6 @@ const getWeather = (dataPoint) => {
     })
     .catch((error) => {
       console.error("Error:", error);
-      output.textContent = "Something went wrong.";
+      output.textContent = "Something is wrong.";
     });
 };
