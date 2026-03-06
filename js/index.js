@@ -1,16 +1,43 @@
-const apiURL =
-  "https://api.open-meteo.com/v1/forecast?latitude=37.7749&longitude=-122.4194&current=precipitation,temperature_2m";
-fetch(apiURL)
-  .then((response) => response.json())
-  .then((data) => {
-    console.log("Response: ", data);
+const output = document.getElementById("output");
 
-    let temperature = data.current.temperature_2m;
+document
+  .getElementById("tempBtn")
+  .addEventListener("click", () => getWeather("temperature_2m"));
+document
+  .getElementById("rainBtn")
+  .addEventListener("click", () => getWeather("precipitation"));
 
-    let rain = data.current.precipitation;
+const getWeather = (dataPoint) => {
+  const city = document.getElementById("cityInput").value;
 
-    console.log(`Temperature: ${temperature} °C`);
+  if (!city) {
+    alert("Please enter a city");
+    return;
+  }
 
-    console.log(`Rain: ${rain} mm `);
-  })
-  .catch((error) => console.error("Something went wrong: ", error));
+  const geoURL = `https://geocoding-api.open-meteo.com/v1/search?name=${city}`;
+
+  fetch(geoURL)
+    .then((res) => res.json())
+    .then((geoData) => {
+      if (!geoData.results) throw new Error("City not found");
+
+      const { latitude, longitude } = geoData.results[0];
+      const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=${dataPoint}`;
+
+      return fetch(weatherURL);
+    })
+    .then((res) => res.json())
+    .then((weatherData) => {
+      const value = weatherData.current[dataPoint];
+      if (dataPoint === "temperature_2m") {
+        output.textContent = `Temperature: ${value} °C`;
+      } else {
+        output.textContent = `Rain: ${value} mm`;
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      output.textContent = "Something went wrong.";
+    });
+};
