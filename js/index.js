@@ -31,7 +31,8 @@ const getWeather = (dataPoint) => {
     .then((weatherData) => {
       const value = weatherData.current[dataPoint];
       if (dataPoint === "temperature_2m") {
-        output.textContent = `Temperature: ${value} °C`;
+        const fahrenheit = (value * 9) / 5 + 32;
+        output.textContent = `Temperature: ${value} °C | ${fahrenheit.toFixed(2)} °F`;
       } else {
         output.textContent = `Rain: ${value} mm`;
       }
