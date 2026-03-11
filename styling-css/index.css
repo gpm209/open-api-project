@@ -74,3 +74,13 @@ button:disabled {
 #output {
   font-size: 1.38rem;
 }
+
+/*phones */
+@media (max-width: 480px) {
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.64rem;
+    align-items: center;
+  }
+}
